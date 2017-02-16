@@ -1,6 +1,6 @@
 # 关于unity
 ---
-## 很多快捷键的使用    
+## 快捷键    
 * ctrl+s 保存法
 * F2 重命名
 * F11 全屏
@@ -33,6 +33,7 @@
 `script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段`
 ***
 ## 关于unity的视角调节
+* 多多F12查看C#源码,还是中文的注释贼爽
 * 按住右键拖动以自己为中心环视
 * alt+左键拖动以聚焦Object为中心环视
 * alt+右键拖动和鼠标滑轮 放近放远
