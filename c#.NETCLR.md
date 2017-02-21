@@ -418,11 +418,10 @@
     所以强烈建议将所有字段都设为 **private**.
   * 要允许用户或类型获取或设置状态信息,就公开一个针对该用途的方法.数据字段封装带来了巨大的好处.另外,将Set标记为protected,就可以只允许派生类型修改值
   * CLR提供了属性机制,可以将属性想象成 **智能字段**,即背后有额外逻辑的字段.
-
   >public String Name{  
-  >  get{return this.name;}  
-  >  set{this.name=value;}//关键字value总指代新值  
-  >}
+    get{return this.name;}  
+    set{this.name=value;}//关键字value总指代新值  
+  }
 
   * 属性的几个特点
     * 每个属性都有名称和类型(类型不能是void)
@@ -537,13 +536,49 @@
     EventHander<NewMailEventArgs temp = Volatile.Read(ref this.NewMail)  
     if(temp!=null)temp(this,e);  }}  
 
-    * 出于 **线程安全** 的考虑,在引发事件前,要将对委托字段的引用复制到一个临时变量temp中,然后检查事件的登记对象是否为空,如不为空,则引发事件.
+    * 出于 **线程安全** 的考虑,在引发事件前,要将对委托字段的引用复制到一个临时变量temp中,然后检查事件的登记对象是否为空,如不为空,则引发事件.不使用临时变量的问题在于,虽然线程检查出NewMail不为null,但就在调用NewMail之前,另一个线程有可能从委托链中移除一个委托,使NewMail成了null,但这时候第一个线程已经执行完了空指针检查,这会抛出NullReferenceException异常,为了修正这个 **竞态问题** ,有了如下这种写法:  
+    `EventHander<NewMailEventArgs> temp= Volatile.Read(ref NewMail);
+    if(temp!=null)temp(this,e);`  
+    来替代原来的写法:  
+    `if(NewMail!=null)NewMail(this,e);`
+    * **代码复用思想**: 为方便起见,可以定义扩展方法(后缀Extensions)来封装这个线程安全逻辑:
+    >public static class EventArgExtensions{  
+    public static void Raise<TEventArgs(this TEventArgs e,Object sender,  
+    ref EventHandler<TEventArgs eventDelagate){  
+    EventHandler<TEventArgs temp=Volatile.Read(ref eventDelagate);  
+    if(temp!=null)temp(sender,e);} }  
+    但是貌似泛型扩展方法,导致任意类型都能用这个扩展方法,应该是合理的吧,因为任意类型都可以定义事件,然后使用这个事件模式就应当使用这个线程安全逻辑
 
-
-
-
-
-
+  4. 第四步:定义方法将输入转化为期望事件
+    * 类还必须有一个方法获取输入并转化为事件的引发,即在这个方法中,将事件的附加信息构造成对象,并作为参数传给负责引发事件的方法.
+* 编译器实现事件成员的 **内部细节**
+  * C#编译器在编译时将事件成员转换为 **3个构造**
+    1. 一个被初始化为null的私有委托字段  
+    2. 一个公共add_xxx方法(xxx是事件名)
+    3. 一个公共remove_xxx方法(xxx是事件名)  
+  * 第一个构造是具有恰当委托类型的字段,该字段是对一个委托列表的头部的引用.事件发生时会通知这个列表中的委托,字段初始化为null表明没有listener登记对该事件的关注.一个方法登记对事件的关注时,该字段引用事件委托类型的实例,然后该实例可能引用更多的委托实例.侦听者登记对事件的关注时,只需将委托类型的实例添加到该委托列表中,注销对事件的关注时意味着从列表中移除委托实例  
+  注意: 该委托字段始终被定义为 **private**,目的是防止类外部的代码不正确的操纵它.
+  * 第二个构造是一个方法,允许其它对象登记对事件的关注,C#编译器在事件名之前附加 **add_前缀** 并自动命名该方法.C#编译器还自动为方法生成代码,生成的代码总是调用System.Delegate的静态Combine方法(被重载为+=),它将委托实例添加到委托列表中,返回新的列表头
+  * 第三个构造是一个方法,允许其它对象注销对事件的关注,C#编译器在事件名之前附加 **remove_前缀** 并自动命名该方法.方法中的代码总是调用System.Delegate的静态Remove方法(被重载为-=),将委托实例从列表中删除,返回新的列表头  
+  * 注意:试图删除从未添加过的方法,Delegate的Remove方法在内部不做任何事情,也就是不会抛出任何异常,事件的方法集合保持不变.
+  * add和remove方法以 **线程安全** 的一种模式更新值,该模式的详情见 Interlocked Anything模式
+  * add和remove方法的可访问性与事件的可访问性一致,一般为public/protected,但无论如何,只有类型本身才能访问委托字段
+  * 除了生成3个构造,编译器还会在托管程序集中生成一个事件定义记录项,这个记录项包含了一些标志(flag)和 **基础委托类型** (underlying delegate type).这些信息的作用很简单,就是建立"事件"的抽象概念和它的访问器方法之间的联系.而CLR并不使用这些信息.
+* 设计侦听事件的类型(事件的观察者Listener)
+  * 该类型应当包括下面几个部分
+    1. 构造函数
+    2. 登记对事件的关注的方法(public)
+    3. 注销对事件的关注的方法(public)
+    4. 回调方法(private)
+  * C#可以使用 **+=** 操作符登记方法对事件的关注,如:  
+  `mm.NewMail += FaxMsg;`(-=操作符注销关注同理.)  
+  C#编译器内建了对事件的支持,会将+=操作符重载为下面的方法:  
+  `mm.add_NewMail(new EventHandler<NewMailEventArgs>(this.FaxMsg));`  
+  C#编译器生成的代码构造了一个委托对象,其中包装了Fax类的FaxMsg方法,接着C#编译器调用了自动生成的add_NewMail方法,向它传递新的委托对象.这种重载 **隐藏** 了内部的委托的实现细节,将方法直接登记到事件上.(可以用ILDasm.exe工具查看IL代码)
+  * MailManager对象引发事件时,Fax对象的FaxMsg方法会被调用.调用这个方法时,会传递MailManager的实例作为它的第一个参数(即Sender),该参数大部分时候被忽略,但是如果Fax对象希望在相应事件时访问MailManager对象的成员,它就能派上用场了(但是既然如此,为什么不在引发事件之前,将MailManager对象的成员封装到NewMailEventArgs中呢?)第二个参数是NewMailEventArgs对象引用,对象中包含MailManager和NewMailEventArgs设计者认为对事件接受者(Fax)来说有用的附加信息.在此例中就是发件人,收件人,主题和内容.
+  * ***这条对于unity游戏开发非常重要 !***  
+  对象不再希望接收事件通知时,应 **注销** 对事件的关注. 对象只要向任一事件登记了它的一个方法,便永远不会被 **垃圾回收**,所以如果你的类型要实现IDisposable和Dispose方法,就应该在实现中注销对所有事件的关注.(也就是GameObject没有用之后,应该注销掉所有它的方法对事件的关注)
+* 显式实现事件
 
 
 
