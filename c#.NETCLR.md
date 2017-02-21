@@ -499,6 +499,48 @@
    protected set{m_name=value;}  
  }  }
 
+   * Name属性本身是public属性,意味着get访问器方法是公共的,所有代码都能调用.而set访问器方法声明为protected,只能从SomeType内部定义的代码中调用,或者从SomeType的派生类型的代码中调用
+* 泛型属性访问器方法 (有待深入理解)
+  * 属性不能引入它自己的泛型类型参数,最主要的原因是概念上说不通.属性本来应该表示可供查询或设置的某个对象特征.一旦引入泛型类型的参数,就意味着有可能改变查询/设置行为.**但是属性不应该和行为站边**.公开对象的行为,应该定义方法而非属性.
+
+### 十一、事件  
+*按照Microsoft的 **事件模式** 下面有很多约定的内容,实际上事件的使用更加灵活*
+* 设计要公开事件的类型  
+  1. 第一步:定义类型来容纳所有需要发送给事件通知接收者的附加信息  
+    * 事件引发时,引发事件的对象可能希望接收事件通知的对象传递一些附加信息,这些附加信息需要封装到它自己的类中.该类通常包含一组私有只读字段,以及一些用于公开这些字段的只读公共属性.根据 **约定**,这种类应该从System.EventArgs派生,并且类名以EventArgs结束.下面将该类命名为NewMailEventArgs.它的各个字段包含了发件人(m_from),收件人(m_to),标题(m_subject)和内容(m_content).  
+    * 注意: 事件模式要求委托定义和回调方法将派生自EventArgs的参数命名为e,这个要求的唯一作用就是加强事件模式的**一致性**.另外,事件模式要求所有事件处理方法的返回类型都是 **void** ,这很有必要,因为引发事件后可能调用好几个回调方法,但没有方法获得所有回调方法的返回值(如果将所有返回信息也封装到一个类型中?).
+    * 理解:它们本可以分别作为委托的参数传递的,但是Microsoft提供了一种更清晰的 **事件模型**.  
+    在FCL中定义了EventArgs类:  
+    >public class EventArgs{  
+    public static readonly EventArgs Empty = new EventArgs();  
+    public EventArgs(){ }  }
+
+    * 定义不用传递附加数据的事件时,可直接使用EventArgs.Empty,不用构造新的EventArgs对象,这是一个很好的**设计思想**    
+   容纳所有应该发给事件接受者的附加信息的NewMailEventArgs:  
+  >internal class NewMailEventArgs : EventArgs{  
+  private readonly String m_from,m_to,m_subject,m_content;//私有只读字段  
+  public NewMailEventArgs(String m_from,...){...}//公共只读属性  
+  public String From{get{return m_from}}...  }
+
+  2. 第二步,定义事件成员  
+    * FCL在System命名空间下定义了泛型EventHander委托类型:  
+    `public delegate void EventHander<TEventArgs>(Object Sender,TEventArgs e); `    
+    * 这样设计的话,所有对应泛型EventHander委托类型的回调方法原型就必须是下面这种形式:  
+    `void MethodName(Object Sender,NewMailEventArgs e){...};`NewMailEventArgs类型也可以是其它继承自EventArgas的类. 将Sender参数的类型定位Object的原因之一是灵活性,它使委托能由多个类型使用,只要类型提供了TEventArgs事件.
+    * 也就是按照这种事件模式,本该作为参数传递的很多附加信息都应当封装到EventArgs的派生类中,然后和 **事件的发出者Sender** 和 **封装了所有的附加信息的对象** 作为两个参数传递给回调方法.
+    * 事件是作为类的成员在类中声明的:  
+    `public event EventHander<NewMailEventArgs> NewMail;`
+  3. 第三步,定义负责引发事件的方法来通知事件的登记对象
+    * 按照约定,引发事件的类(Sender)要定义一个 **受保护的虚方法**,如果是密封类,则定义为私有非虚方法.要想触发事件,就需要Sender或其派生类的代码调用该方法,方法一般只获取一个参数,即NewMainEventArgs对象(封装附加信息的类型的实例).方法的默认实现只是检查一下是否有对象登记了对事件的关注.  
+    >internal class MailManager{  
+    protected virtual void OnNewMail(NewMailEventArgs e){  
+    EventHander<NewMailEventArgs temp = Volatile.Read(ref this.NewMail)  
+    if(temp!=null)temp(this,e);  }}  
+
+    * 出于 **线程安全** 的考虑,在引发事件前,要将对委托字段的引用复制到一个临时变量temp中,然后检查事件的登记对象是否为空,如不为空,则引发事件.
+
+
+
 
 
 
