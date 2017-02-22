@@ -30,7 +30,7 @@
 * VS2015 ctrl+k+c注释多行 ctrl+k+u取消注释多行
 ---
 ## 一些常见的翻译
-`script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段` `airty元数(参数个数)`
+`script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段` `airty元数(参数个数)` `Framework Class Library(FCL)`
 ***
 ## 关于unity的视角调节
 * 多多F12查看C#源码,还是中文的注释贼爽
