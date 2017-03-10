@@ -28,9 +28,12 @@
 * shift+space 输入法切换圆角半角
 * ctrl+. 输入法切换中英文标点(在VS中隐藏智能提示)
 * VS2015 ctrl+k+c注释多行 ctrl+k+u取消注释多行
+* 在类或方法前面/// 自动生成summary(很爽)
+* 按住shift 在拖动UI物体,可以实现直左直右(直上直下)
+
 ---
 ## 一些常见的翻译
-`script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段` `airty元数(参数个数)` `Framework Class Library(FCL)`
+`script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段` `airty元数(参数个数)` `Framework Class Library(FCL)` `current当前的`
 ***
 ## 关于unity的视角调节
 * 多多F12查看C#源码,还是中文的注释贼爽
@@ -38,7 +41,8 @@
 * alt+左键拖动以聚焦Object为中心环视
 * alt+右键拖动和鼠标滑轮 放近放远
 * 按住滑轮拖动可以平移视野 方便观察
-* 选中T工具(操作UI界面大小)的时候,先点边角,按住alt键拖动时会以中心对称拖动
+* 选中T工具(操作UI界面大小)的时候,先点边角,按住alt键拖动时会以中心对称拖动,同样的,先点边角,按住shift键拖动,图片(或GameObject会) **等比** 放大或缩小. 也可以同时按住shift和alt,以中心点等比例放大
+* Text组件添加shadow 加黑色阴影,添加outline,给字体添加外边框增加清晰度
 > 在这里写一下提示性内容吧
 
 ***
@@ -112,3 +116,30 @@ Java的类名，C#的属性名、方法名、类名，这些标识符遵循“�
 * Unity3D挂载在GameObject上的脚本(即继承自MononBehaviour的类型)一定要 **避免使用构造函数**.GameObject会在编辑器的多个地方被显示，如场景编辑器内、Prefab选中时等，这些时候都需要调用它们的构造函数来初始化成员变量的默认值，以便在编辑器中显示它们。也就是说，构造函数不光在游戏运行时会被调用，它的调用时机是“未知的”。而Awake和Start只会在游戏运行时被调用，并严格定义了它们的调用时机和顺序。所以，构造函数不可以描述游戏逻辑，请用Awake和Start.很正确,完美解释了试验结果. 所以像readonly字段之类只能在构造阶段初始化的成员，尽量不要用.由于内联初始化时在构造函数中进行的,所以也无法使用 **内联初始化** .
 * UGUI中的控件在Inspector中显示的绑定方法的那个东西,本质是个 **事件**,不知道可不可以自己定义的事件能否显示,能显示那就爽了
 * UI图片资源需要在Inspector界面将Texture属性设置为Sprites(2D and UI)
+*  [SerializeField]特性可以使私有字段序列化,并使其在Inspector面板中显示,目前找到的一种不错的设计模式
+* UI元素要记得设置anchor
+* Image的属性:
+  * simple属性,正常
+  * sliced属性,需要配合九宫切图,使sprite在拉伸时只有中间一宫放大,边框不放大,防止放大时图片失真.
+  * tiled属性,不能有切图,是平铺,放大后会按照图片原来的大小,平铺整个空间.
+  * filled属性,用来显示图片中的某一部分.
+* UGUI中 Image"游戏物体"中的Image组件实际是它本身this.
+* double result=s.ToString("#0.00");//点后面几个0就保留几位
+* 界面处理和数据处理分离 button被按下后,分别向UI类和数据类发送通知.可以在同一个GameObject下挂两个脚本,一个处理数据,一个处理UI.在数据和UI耦合较大时这么处理.(也许UI界面不用这么做吧)
+* Update Awake等消息方法 我个人认为 最好加上protected virtual修饰符,一是方便子类调用父类,二是方便子类重写
+* 如果两个GameObject的显示优先级那个属性一样,那么在Hierarchy界面下方的GameObject会覆盖上方的GameObject,可以通过拖动来调整显示.
+* 数据类变量必须隐藏(封装到属性中,对外只读),至于UI类变量,感觉可以public暴露到外面,视情况而定.
+* 重写父类的方法无法修改父类的访问修饰符
+* 如果不想希望让某个类实例化 可以有两种做法
+  * 1.将这个类定义为抽象类... 有点不好
+  * 2.偶然想到的这个方法,将构造器的访问修饰符设为 **protected** (不能是private,否则子类都无法调用此构造器,是绝对不行的),这样外界无法通过new构造这个类型的实例,然后将派生程度比较大的(你想使其能实例化的)构造器设为public.
+* UI类 和数据类 分开, 然后UI类中有一个变量是数据类.
+* Manager类全都挂在主角身上?
+* 构造器中如果有私有字段和公有属性,一定要初始化该字段的属性
+* 使用 **文档注释**  
+文档注释，用于对类和方法进行注释，在类或方法前面，连续输入3个/,系统会自动补全注释。
+    /// <summary>  
+    /// 将物品附在格子上  
+    /// </summary>  
+    /// <param name="thing">物品</param>   
+    /// <param name="gridItem">格子</param>
