@@ -30,10 +30,12 @@
 * VS2015 ctrl+k+c注释多行 ctrl+k+u取消注释多行
 * 在类或方法前面/// 自动生成summary(很爽)
 * 按住shift 在拖动UI物体,可以实现直左直右(直上直下)
+* ctrl+tab 切换文件/选项卡
 
 ---
 ## 一些常见的翻译
 `script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段` `airty元数(参数个数)` `Framework Class Library(FCL)` `current当前的`
+`SQLServer[sikəu 'sə:və]` `ADO.Net(a do 直接这样读)` `cast 投射` `shadow 阴影` `Texture 纹理`
 ***
 ## 关于unity的视角调节
 * 多多F12查看C#源码,还是中文的注释贼爽
@@ -143,3 +145,9 @@ Java的类名，C#的属性名、方法名、类名，这些标识符遵循“�
     /// </summary>  
     /// <param name="thing">物品</param>   
     /// <param name="gridItem">格子</param>
+* setTrigger或者设置Animation的变量之后 在当前帧playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump") 还是false的 需要等到下一帧才生效
+* 所谓事件的穿透,比如最顶层接受click事件,那么被其遮住的UI的click事件无法触发,如果顶层不接受click事件,那么被其遮住的UI就可以相应Click事件
+* Ondrop比OnEndDrop执行得早 end最后执行
+* 好程序员做一切能提高效率的事情.  
+* setParent的第二个参数设置为true,其世界坐标不会改变
+* 用unity做游戏实质上就是用轮子组系统的过程，无论抵制轮子还是造轮子，支持插件还是反对插件，都不重要。重要的是整体的框架是否健壮合理，中间的焊缝是否严实
