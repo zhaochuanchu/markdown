@@ -151,3 +151,9 @@ Java的类名，C#的属性名、方法名、类名，这些标识符遵循“�
 * 好程序员做一切能提高效率的事情.  
 * setParent的第二个参数设置为true,其世界坐标不会改变
 * 用unity做游戏实质上就是用轮子组系统的过程，无论抵制轮子还是造轮子，支持插件还是反对插件，都不重要。重要的是整体的框架是否健壮合理，中间的焊缝是否严实
+* Unity3D中将动画分为两类:  
+  1. Body Transform(pose:姿势)
+  2. Root Transform(trajectory:轨迹)  
+  我们可以设置动画中的关于模型的一些变换()平移旋转等)是属于Body Transform(pose姿势的变化)还是Root Transform(trajectory位置的变化)的一部分。
+* 使用[Range(...,...)] attribute 定义限定范围的float值
+* 继承了MonoBehaviour的类加泛型是没有意义的
