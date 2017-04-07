@@ -157,3 +157,19 @@ Java的类名，C#的属性名、方法名、类名，这些标识符遵循“�
   我们可以设置动画中的关于模型的一些变换()平移旋转等)是属于Body Transform(pose姿势的变化)还是Root Transform(trajectory位置的变化)的一部分。
 * 使用[Range(...,...)] attribute 定义限定范围的float值
 * 继承了MonoBehaviour的类加泛型是没有意义的
+* 可以直接在Script脚本界面指定GameObject引用
+* duration(持续时间) 反比与speed(速度)
+* Unity自带BaseInput脚本 StandaloneInputModule组件 等等可以支持交互控制
+* #if Mobile_Input  
+...  
+\#endif
+* 说说: 别人造好的轮子 改用还得用
+* FreeLookCameraLook会自动调整到目标的位置 Camera中Pivot是摄像机相对于目标的位置
+* MLGB 标准资源中的Camera还要求player初始在摄像机的Z轴正方向,反方向会出错 也就是Camera的Z需要是负数
+* 命名的时候可以 **Multiplier后缀** 表示乘数因子(默认1.0f)
+* Humanoid 和 Generic 不能在一个动画中同时使用
+* **在VS中 可以直接查看一个方法被在哪里引用!!!!!!!!!!** 如此犀利的神器竟然一直没有想到 真是fuck
+* 在自动调用MonoBehaviour的message方法时,参数签名一定要符合"设定",否则会报错:This message parameter has to be of type: Collider .The message will be ignored.
+* Debug.Log:在Console输出信息  
+Debug.LogWarning:在Console输出警告  
+Debug.LogError:在Console输出错误(最醒目 但不会中断)
