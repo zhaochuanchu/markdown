@@ -178,3 +178,4 @@ Debug.LogError:在Console输出错误(最醒目 但不会中断)
 * 接口可以作为Script的一个flag,是否实现该接口表示其一种是或否的属性 即 **把接口作为一个标志位** 有点骚hh 因为无法修改MonoBehaviour 又不想额外写一个类让脚本来继承(强迫症 都继承MonoBehavior多好,额外的类里仅仅之后那么点代码不值).这时候接口作为标志位然后if(Scripts as IXXX!=null){...} 即可 更改需求后也方便修改
 * 大版本号,如2.0,3.0 是更新游戏脚本(代码) 而小版本号,如2.01 2.02 是更新游戏资源
 * Unity脚本在没有指定命名空间时 其命名空间默认为<global namespace> 每个脚本自动using global namespace;
+* 不要在循环里申请内存(new)
