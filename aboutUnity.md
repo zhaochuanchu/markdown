@@ -1,7 +1,7 @@
 # 关于unity
 ---
 ## 快捷键    
-* ctrl+s 保存法
+* ctrl+s 保存
 * F2 重命名
 * F11 全屏
 * ctrl+鼠标滑轮 放大和缩小界面
@@ -30,12 +30,13 @@
 * VS2015 ctrl+k+c注释多行 ctrl+k+u取消注释多行
 * 在类或方法前面/// 自动生成summary(很爽)
 * 按住shift 在拖动UI物体,可以实现直左直右(直上直下)
+* 按住鼠标右键 W/A/S/D 控制画面摄像机移动
 * ctrl+tab 切换文件/选项卡
 
 ---
 ## 一些常见的翻译
 `script脚本` `manual手册` `canvas画布` `invoke调用` `inverse反向` `velocity速率` `sorting layer渲染层级` `GC 垃圾回收(器)` `IL托管代码`  `CLR Common Language Runtime公共语言运行时` `native本地的原生的` `cache缓存` `Garbage Collecter(GC)垃圾回收器` `field字段` `airty元数(参数个数)` `Framework Class Library(FCL)` `current当前的`
-`SQLServer[sikəu 'sə:və]` `ADO.Net(a do 直接这样读)` `cast 投射` `shadow 阴影` `Texture 纹理`
+`SQLServer[sik?u 's?:v?]` `ADO.Net(a do 直接这样读)` `cast 投射` `shadow 阴影` `Texture 纹理`
 ***
 ## 关于unity的视角调节
 * 多多F12查看C#源码,还是中文的注释贼爽
@@ -68,18 +69,18 @@
 * 将一个小数强制转换成float可以直接在后面加f如 0.58f *这个以前比较忽略*
 * 依附在组件上的声音 如果Gameobject被销毁 声音也会跟着消失 所以在播放类似"爆炸""破坏"等音效时候(需要销毁Gameobject的场合)不能使用组件的形式播放音效
 * 优化:对于Unity3D自带的SendMessage来说，它的最大的诟病，是它的效率问题。对于这一问题，可以用Delegate取而代之，据网上说，Delegate的效率10倍与SendMessage。
-但是并不是说不能使用SendMessage，毕竟他底层封装了反射机制，使用十分方便，只是不可频繁使用。
+  但是并不是说不能使用SendMessage，毕竟他底层封装了反射机制，使用十分方便，只是不可频繁使用。
 * >对于优化的一个不错的想法 有人希望借助优化脚本来提高性能所以不想继承monoBehaviour:
-但是如果你要用Unity，就该放手写脚本（当然蹩脚程序一个obj挂几十个compent的当我没说过），千万不要患上性能强迫症去花大把时间构造性能强大结构复杂的脚本。
-通常，一个游戏（Unity开发桌面程序或者动画同理）流畅与否取决于画面渲染，而不是脚本。脚本制作只要记住一点，只优化大量循环的代码就行了。经典的代码例如角色控制器，AI等。
-其他代码尽可能简洁。非游戏开发一般是不需要考虑这么多的，测试的时候注意有没有特别卡的地方就好了。如果客户特别强调性能的话就要多花功夫了。
-继承MonoBehaviour是有很多好处的，调试方便，思维顺畅，这些都是可以大大加快开发进程的，与追求性能相比，追求开发速度意义远大于性能。
+  >但是如果你要用Unity，就该放手写脚本（当然蹩脚程序一个obj挂几十个compent的当我没说过），千万不要患上性能强迫症去花大把时间构造性能强大结构复杂的脚本。
+  >通常，一个游戏（Unity开发桌面程序或者动画同理）流畅与否取决于画面渲染，而不是脚本。脚本制作只要记住一点，只优化大量循环的代码就行了。经典的代码例如角色控制器，AI等。
+  >其他代码尽可能简洁。非游戏开发一般是不需要考虑这么多的，测试的时候注意有没有特别卡的地方就好了。如果客户特别强调性能的话就要多花功夫了。
+  >继承MonoBehaviour是有很多好处的，调试方便，思维顺畅，这些都是可以大大加快开发进程的，与追求性能相比，追求开发速度意义远大于性能。
 * 也有人说需要引擎来管理你的脚本就继承，不需要就不继承，差不多就这样
 * >c#和java命名有所不同
-不同语言有不同的习惯，简答的说：
-Java的变量名、属性名、方法名，C#的变量名，这些标识符遵循“骆驼命名法”，标识符首字母小写，组成标识符的每个单词首字母大写。
-Java的类名，C#的属性名、方法名、类名，这些标识符遵循“帕斯卡命名法”，标识符首字母大写，组成表字符的美国单词首字母大写。
-这两种命名法的规定其实相当详细复杂，我说的只是简单的规则，仅供参考。
+  >不同语言有不同的习惯，简答的说：
+  >Java的变量名、属性名、方法名，C#的变量名，这些标识符遵循“骆驼命名法”，标识符首字母小写，组成标识符的每个单词首字母大写。
+  >Java的类名，C#的属性名、方法名、类名，这些标识符遵循“帕斯卡命名法”，标识符首字母大写，组成表字符的美国单词首字母大写。
+  >这两种命名法的规定其实相当详细复杂，我说的只是简单的规则，仅供参考。
 
 * unity中三种调用其它脚本函数的方法
 >* 第一种，被调用脚本函数为static类型，调用时直接用  脚本名.函数名()。很不实用……
@@ -107,75 +108,133 @@ Java的类名，C#的属性名、方法名、类名，这些标识符遵循“�
       public Transform transform { get; }
 
 * 选择UGUI吧
+
 * IL是.NET框架中中间语言（Intermediate Language）的缩写
+
 * VS2015即时窗口很有用,输入属性或者字段可以直接查看其值
 
 * 挂载在游戏物体上的脚本必须显式继承MonoBehaviour
+
 * 在canvas(画布上),使用的是UGUI系统,只能添加UI元素,不能加入2DObject 3DObject,因为它们不是一个次元的,也许 不应当利用事件系统来做UI的事件处理,而且貌似也没法处理
+
 * 踩到一个坑,**挂载在物体上的组件(包括脚本)可以理解成一个实例**,所以不要定义静态方法,这么jb坑? 无法调用静态方法?静态成员不属于实例对象，所以没法通过GC自动回收，会一直占据内存.你看到的所有Unity组件都是一个个实例，你要通过Unity的编辑器去配置.实际上到这里已经可以基本总结出何时需要使用单例了：只要你的类需要保存其他组件作为变量，那么就有必要使用单例；只要你有在Unity编辑器上进行参数配置的需求，那么就有必要使用单例；只要你的管理器需要进行加载的顺序控制，那么就有必要使用单例（比如热更新后加载ResourcesManager）；
+
 * 继承自MonoBehaviour单例模式很简单,只需要在Awake（）里面，添加一句instance = this;其中instance是静态私有成员.如果是普通类的单例,就麻烦一些.
+
 * 在unity游戏开发中,尽量 **避免使用静态变量或方法**. 大部分操作的对象都是实例.
+
 * Unity3D挂载在GameObject上的脚本(即继承自MononBehaviour的类型)一定要 **避免使用构造函数**.GameObject会在编辑器的多个地方被显示，如场景编辑器内、Prefab选中时等，这些时候都需要调用它们的构造函数来初始化成员变量的默认值，以便在编辑器中显示它们。也就是说，构造函数不光在游戏运行时会被调用，它的调用时机是“未知的”。而Awake和Start只会在游戏运行时被调用，并严格定义了它们的调用时机和顺序。所以，构造函数不可以描述游戏逻辑，请用Awake和Start.很正确,完美解释了试验结果. 所以像readonly字段之类只能在构造阶段初始化的成员，尽量不要用.由于内联初始化时在构造函数中进行的,所以也无法使用 **内联初始化** .
+
 * UGUI中的控件在Inspector中显示的绑定方法的那个东西,本质是个 **事件**,不知道可不可以自己定义的事件能否显示,能显示那就爽了
+
 * UI图片资源需要在Inspector界面将Texture属性设置为Sprites(2D and UI)
+
 *  [SerializeField]特性可以使私有字段序列化,并使其在Inspector面板中显示,目前找到的一种不错的设计模式
+
 * UI元素要记得设置anchor
+
 * Image的属性:
   * simple属性,正常
   * sliced属性,需要配合九宫切图,使sprite在拉伸时只有中间一宫放大,边框不放大,防止放大时图片失真.
   * tiled属性,不能有切图,是平铺,放大后会按照图片原来的大小,平铺整个空间.
   * filled属性,用来显示图片中的某一部分.
+
 * UGUI中 Image"游戏物体"中的Image组件实际是它本身this.
+
 * double result=s.ToString("#0.00");//点后面几个0就保留几位
+
 * 界面处理和数据处理分离 button被按下后,分别向UI类和数据类发送通知.可以在同一个GameObject下挂两个脚本,一个处理数据,一个处理UI.在数据和UI耦合较大时这么处理.(也许UI界面不用这么做吧)
+
 * Update Awake等消息方法 我个人认为 最好加上protected virtual修饰符,一是方便子类调用父类,二是方便子类重写
+
 * 如果两个GameObject的显示优先级那个属性一样,那么在Hierarchy界面下方的GameObject会覆盖上方的GameObject,可以通过拖动来调整显示.
+
 * 数据类变量必须隐藏(封装到属性中,对外只读),至于UI类变量,感觉可以public暴露到外面,视情况而定.
+
 * 重写父类的方法无法修改父类的访问修饰符
+
 * 如果不想希望让某个类实例化 可以有两种做法
   * 1.将这个类定义为抽象类... 有点不好
   * 2.偶然想到的这个方法,将构造器的访问修饰符设为 **protected** (不能是private,否则子类都无法调用此构造器,是绝对不行的),这样外界无法通过new构造这个类型的实例,然后将派生程度比较大的(你想使其能实例化的)构造器设为public.
+
 * UI类 和数据类 分开, 然后UI类中有一个变量是数据类.
+
 * Manager类全都挂在主角身上?
+
 * 构造器中如果有私有字段和公有属性,一定要初始化该字段的属性
+
 * 使用 **文档注释**  
-文档注释，用于对类和方法进行注释，在类或方法前面，连续输入3个/,系统会自动补全注释。
+  文档注释，用于对类和方法进行注释，在类或方法前面，连续输入3个/,系统会自动补全注释。
     /// <summary>  
     /// 将物品附在格子上  
     /// </summary>  
     /// <param name="thing">物品</param>   
     /// <param name="gridItem">格子</param>
+
 * setTrigger或者设置Animation的变量之后 在当前帧playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump") 还是false的 需要等到下一帧才生效
+
 * 所谓事件的穿透,比如最顶层接受click事件,那么被其遮住的UI的click事件无法触发,如果顶层不接受click事件,那么被其遮住的UI就可以相应Click事件
+
 * Ondrop比OnEndDrop执行得早 end最后执行
+
 * 好程序员做一切能提高效率的事情.  
+
 * setParent的第二个参数设置为true,其世界坐标不会改变
+
 * 用unity做游戏实质上就是用轮子组系统的过程，无论抵制轮子还是造轮子，支持插件还是反对插件，都不重要。重要的是整体的框架是否健壮合理，中间的焊缝是否严实
+
 * Unity3D中将动画分为两类:  
   1. Body Transform(pose:姿势)
   2. Root Transform(trajectory:轨迹)  
-  我们可以设置动画中的关于模型的一些变换()平移旋转等)是属于Body Transform(pose姿势的变化)还是Root Transform(trajectory位置的变化)的一部分。
+    我们可以设置动画中的关于模型的一些变换()平移旋转等)是属于Body Transform(pose姿势的变化)还是Root Transform(trajectory位置的变化)的一部分。
+
 * 使用[Range(...,...)] attribute 定义限定范围的float值
+
 * 继承了MonoBehaviour的类加泛型是没有意义的
+
 * 可以直接在Script脚本界面指定GameObject引用
+
 * duration(持续时间) 反比与speed(速度)
+
 * Unity自带BaseInput脚本 StandaloneInputModule组件 等等可以支持交互控制
+
 * #if Mobile_Input  
-...  
-\#endif
+  ...  
+  \#endif
+
 * 说说: 别人造好的轮子 改用还得用
+
 * FreeLookCameraLook会自动调整到目标的位置 Camera中Pivot是摄像机相对于目标的位置
+
 * MLGB 标准资源中的Camera还要求player初始在摄像机的Z轴正方向,反方向会出错 也就是Camera的Z需要是负数
+
 * 命名的时候可以 **Multiplier后缀** 表示乘数因子(默认1.0f)
+
 * Humanoid 和 Generic 不能在一个动画中同时使用
+
 * **在VS中 可以直接查看一个方法被在哪里引用!!!!!!!!!!** 如此犀利的神器竟然一直没有想到 真是fuck
+
 * 在自动调用MonoBehaviour的message方法时,参数签名一定要符合"设定",否则会报错:This message parameter has to be of type: Collider .The message will be ignored.
+
 * Debug.Log:在Console输出信息  
-Debug.LogWarning:在Console输出警告  
-Debug.LogError:在Console输出错误(最醒目 但不会中断)
+  Debug.LogWarning:在Console输出警告  
+  Debug.LogError:在Console输出错误(最醒目 但不会中断)
+
 * 各种System尽量单例化,以便控制生存周期(不在不该响应的时候响应) 静态类应当作为工具类存在
+
 * GetComponent方法的参数 会获取该类型或该类型的派生类
+
 * 接口可以作为Script的一个flag,是否实现该接口表示其一种是或否的属性 即 **把接口作为一个标志位** 有点骚hh 因为无法修改MonoBehaviour 又不想额外写一个类让脚本来继承(强迫症 都继承MonoBehavior多好,额外的类里仅仅之后那么点代码不值).这时候接口作为标志位然后if(Scripts as IXXX!=null){...} 即可 更改需求后也方便修改
+
 * 大版本号,如2.0,3.0 是更新游戏脚本(代码) 而小版本号,如2.01 2.02 是更新游戏资源
+
 * Unity脚本在没有指定命名空间时 其命名空间默认为<global namespace> 每个脚本自动using global namespace;
+
 * 不要在循环里申请内存(new)
+
+* Untiy的Build失败后，摄像机会失效？fuck unity选择的版本会有影响....
+
+* Unity的Awake函数在脚本所挂在的gameobject启用后执行 Start函数在脚本本身启用后执行
+* IPointerClick等回调方法!!! 如果3D 或者是2D 需要在摄像机上!!! 加上physical Raycaster 组件!!! 方法才会触发!!!
+* Unity的自适应UI 一定要canvas中的CanvasScaler中设置 Scale with Screen Size!
+* Unity在Build的时候 不要使用加速球等清理内存的工具 容易杀死工作进程

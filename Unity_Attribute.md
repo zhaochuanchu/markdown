@@ -1,4 +1,8 @@
-# U3D Attribute 整理
+# U3D Attribute 整理  
+注意:如果一个字段(方法)对应多条attribute,中间用逗号隔开:  
+`[SerializeField,Range(0.1f, 2f),Tooltip("变换的时间")]`     
+`private float Duration=0.5f;`
+
 
 ### ContextMenu   
 在Inspector的ContextMenu中增加选项(点击脚本组件右上角的小齿轮) 并执行指定的函数(执行该Attribute后面的方法显示的不一定要和函数名相同)--并且只能执行 **无参** 的方法  

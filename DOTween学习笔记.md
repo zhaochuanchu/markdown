@@ -2,7 +2,8 @@
 使用扩展方法,可以直接从组件调用方法.几乎所有的方法都返回Tweener或者Sequence以保持其引用.二者都可以保存为Tween(Sequence为两个Tweener的差异)  
 Tween可以理解为一种衔接动画,过渡方式,补间动画以保证UI界面的平滑性和流畅性.  
 该系统主要分为四个模块 `全局设置` `具体设置` `全局控制` `具体控制`  
-其中全局的方法均为DOTween的静态方法,并且其中很多具有过滤选项.
+其中全局的方法均为DOTween的静态方法,并且其中很多具有过滤选项.  
+该插件有一些方法需要设置setup之后才有效
 
 ### DOTween静态方法(Tweener也有对应的实例方法)
 * CompleteAll/Complete(bool withCallbacks = false)
